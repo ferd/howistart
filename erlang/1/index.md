@@ -615,10 +615,18 @@ The rebar.config file looks like this:
      %% list of apps to include
      [muumuu]},
 
-    %% comment this line for a release that ships its own Erlang VM
-    {include_erts, false},
-    %% uncomment this line to ship a release without the source code included
-    % {include_src, false}
+    %% Don't ship an Erlang VM by default
+    {include_erts, false}
+]}.
+
+{profiles, [
+    %% called as `rebar3 as prod <command>`
+    {prod, [
+        {relx, [ % override relx specifically
+          {include_src, false}, % don't include source code
+          {include_erts, true}  % include the VM in the release
+        ]}
+    ]}
 ]}.
 ```
 
@@ -690,12 +698,20 @@ The rebar3 config file needs an update too:
      %% list of apps to include
      [muumuu]},
 
-    %% comment this line for a release that ships its own Erlang VM
+    %% Don't ship an Erlang VM by default
     {include_erts, false},
-    %% uncomment this line to ship a release without the source code included
-    % {include_src, false},
 
     {vm_args, "./config/vm.args"}
+]}.
+
+{profiles, [
+    %% called as `rebar3 as prod <command>`
+    {prod, [
+        {relx, [ % override relx specifically
+          {include_src, false}, % don't include source code
+          {include_erts, true}  % include the VM in the release
+        ]}
+    ]}
 ]}.
 ```
 
@@ -766,9 +782,14 @@ Adding `meck` can be done by declaring `rebar.config` dependencies:
 
 ```erlang
 {profiles, [
-  {test, [
-    {deps, [
-        {meck, {git, "https://github.com/eproxus/meck.git", {tag, "0.8.1"}}}
+    {test, [
+        {deps, [
+          {meck, {git, "https://github.com/eproxus/meck.git", {tag, "0.8.1"}}}
+        ]}
+    ]},
+    %% called as `rebar3 as prod <command>`
+    {prod, [
+        ...
     ]}
   ]}
 ]}.
