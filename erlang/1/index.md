@@ -784,7 +784,7 @@ Adding `meck` can be done by declaring `rebar.config` dependencies:
 {profiles, [
     {test, [
         {deps, [
-          {meck, {git, "https://github.com/eproxus/meck.git", {tag, "0.8.1"}}}
+          {meck, {git, "https://github.com/eproxus/meck.git", {tag, "0.8.2"}}}
         ]}
     ]},
     %% called as `rebar3 as prod <command>`
